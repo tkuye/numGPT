@@ -5,9 +5,10 @@
 
   # Model related config
   "model_save_path": "./checkpoint",
+
   "max_seq_len": 32,
-  "batch_size": 32,
-  "num_iterations": 5000,
+  "batch_size": 16,
+  "num_iterations": 2000,
   "learning_rate": 0.00005,
   "embedding_dim": 192,
   "num_layers": 6,

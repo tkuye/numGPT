@@ -94,7 +94,7 @@ class GPT(Base):
         rep += ')'
         return rep
 
-    def generate(self, input_ids, seq_len, temperature=1.0, top_k:int=0):
+    def generate(self, input_ids, seq_len, temperature=1.0, top_k:int=20):
         """
         Generate text from the model.
         """
@@ -103,23 +103,30 @@ class GPT(Base):
             if isinstance(layer, Dropout):
                 layer.disable()
             if isinstance(layer, GPTLayer):
+                layer.masking = False
+                layer.layer_norm1.training = False
+                layer.layer_norm2.training = False
                 layer.MultiHeadAttention.dropout.disable()
+            if isinstance(layer, NormalizationLayer):
+                layer.training = False
         
         
         for _ in range(seq_len):
+            
             logits = self.forward(np.array([input_ids]))
             if temperature != 0:
                 logits = logits / temperature
             probs = softmax(logits, axis=2)
+            
             if top_k == 0:
                 next_id = np.argmax(probs, axis=-1)[0][0]
             else:
                 inputs = np.argsort(probs, axis=2)[:, :, -top_k:][0][0]
-
                 probs = softmax(probs[:, :, -top_k:][0][0])
                 next_id = np.random.choice(inputs, 1, p=probs)
             
             input_ids = np.append(input_ids, next_id)
+            
         # Return text
         return input_ids
 
@@ -141,7 +148,7 @@ class GPTLayer:
         self.W2 = initialize_array(self.n_dimension, self.hidden_size)
         self.B1 = np.zeros((self.hidden_size, 1))
         self.B2 = np.zeros((self.n_dimension, 1))
-        
+        self.masking = True
         self.Xhat = None
         self.X = None
         self.optimizer = optimizer
@@ -165,9 +172,10 @@ class GPTLayer:
         self.B2 = self.optimizer.get('B2')
         self.B1 = self.optimizer.get('B1')
         Xhat = X.copy()
-        
         mask = np.ones((X.shape[1], X.shape[1]))
-        mask = np.tril(mask)
+        
+        if self.masking:
+            mask = np.tril(mask)
         
         Xhat = self.layer_norm1.forward(X)
        # Note that mask needs to come from outer function as we need to pass the status due to the next token.
@@ -177,6 +185,8 @@ class GPTLayer:
         X = X + self.linear(gelu(self.linear(Xhat, self.W1, self.B1)), self.W2, self.B2)
         
         return X
+
+    
 
     def linear(self, X, W, B=None):
         if B is not None:

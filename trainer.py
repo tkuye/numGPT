@@ -54,7 +54,7 @@ class Trainer:
             
                 gradient = gradient.reshape(batch_size, self.model.max_len, self.model.vocab_size)
                 self.model.backward(gradient)
-                loss_val = np.sum(self.loss.forward(X_hat, Y)) / batch_size
+                loss_val = np.sum(self.loss.forward(X_hat, Y)) / (batch_size * self.model.max_len)
                 
                 print(f"LOSS {i}:", loss_val)
                 

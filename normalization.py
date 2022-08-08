@@ -46,7 +46,7 @@ class NormalizationLayer:
         
         X_mean = self.running_mean_x
         X_var = self.running_var_x
-
+        
         if self.training:
             X_mean, X_var = x.mean(axis=0), x.var(axis=0)
             self.running_mean_x = self.momentum * self.running_mean_x + (1 - self.momentum) * X_mean
@@ -55,8 +55,11 @@ class NormalizationLayer:
         
         
         self.var_x  = 1. / np.sqrt(X_var +  self.epsilon)
-        
-        self.x_minus_mean = x - self.running_mean_x
+        try:
+            self.x_minus_mean = x - self.running_mean_x
+        except ValueError:
+            self.x_minus_mean = x - x.mean(axis=0)
+            self.var_x = 1. / np.sqrt(x.var(axis=0) + self.epsilon)
         
         self.standard_x = self.x_minus_mean * self.var_x
         
