@@ -19,4 +19,6 @@ Just use `get_vocab.py` to download the merges and vocab file to the specified f
 ## Contributing
 Please create a pull request if you'd like to contribute to this project. I'm a busy student but I'll be sure to review it as soon as possible!
 
+## Todo
+Write clear unit tests for each module (right now each module just has testing code when ran independently.)
 
