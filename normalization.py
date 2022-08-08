@@ -51,7 +51,7 @@ class NormalizationLayer:
         
         self.x_minus_mean = x - self.mean_x
         
-        self.standard_x = self.x_minus_mean / self.var_x
+        self.standard_x = self.x_minus_mean * self.var_x
         
         array = self.gamma * self.standard_x + self.bias
         

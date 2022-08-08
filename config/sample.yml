@@ -8,7 +8,7 @@
   "max_seq_len": 32,
   "batch_size": 32,
   "num_iterations": 5000,
-  "learning_rate": 0.00001,
+  "learning_rate": 0.00005,
   "embedding_dim": 192,
   "num_layers": 6,
   "attention_heads": 6,
