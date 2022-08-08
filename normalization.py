@@ -9,7 +9,7 @@ class NormalizationLayer:
     The code in this layer was directly sourced from the following link:
     https://github.com/renan-cunha/BatchNormalization/blob/master/src/feed_forward/layers.py
     """
-    def __init__(self, n_dimension, optimizer, epsilon=1e-6, id=0):
+    def __init__(self, n_dimension, optimizer, epsilon=1e-6, id=0, momentum=0.9):
         self.n_dimension = n_dimension
         self.gamma =initialize_array(1, n_dimension) # Element scale
         self.bias = initialize_array(1, n_dimension) # Element offset
@@ -26,6 +26,7 @@ class NormalizationLayer:
         self.optimizer = optimizer
         self.training = True
         self.running_avg_gamma = 0.9
+        self.momentum = momentum
         self.num_examples = 0
         self.gamma_grad = np.zeros(n_dimension)
         self.bias_grad = np.zeros(n_dimension)
@@ -43,13 +44,19 @@ class NormalizationLayer:
         self.bias = self.optimizer.get(f'{self.id}-bias')
         self.gamma = self.optimizer.get(f'{self.id}-gamma')
         
+        X_mean = self.running_mean_x
+        X_var = self.running_var_x
+
+        if self.training:
+            X_mean, X_var = x.mean(axis=0), x.var(axis=0)
+            self.running_mean_x = self.momentum * self.running_mean_x + (1 - self.momentum) * X_mean
+            self.running_var_x = self.momentum * self.running_var_x + (1 - self.momentum) * X_var
+
         
-        self.mean_x = np.mean(x, axis=0)
-        std_val = np.std(x, axis=0)
         
-        self.var_x  = 1. / (std_val + self.epsilon)
+        self.var_x  = 1. / np.sqrt(X_var +  self.epsilon)
         
-        self.x_minus_mean = x - self.mean_x
+        self.x_minus_mean = x - self.running_mean_x
         
         self.standard_x = self.x_minus_mean * self.var_x
         
@@ -60,7 +67,7 @@ class NormalizationLayer:
 
     def backward(self, grad_input: np.ndarray) -> np.ndarray:
         
-        invN = 1. / np.prod(self.mean_x.shape)
+        invN = 1. / np.prod(self.running_mean_x.shape)
         self.gamma_grad = np.sum(grad_input * self.standard_x, axis=(0,1))
         self.bias_grad = np.sum(grad_input, axis=(0, 1))
 
