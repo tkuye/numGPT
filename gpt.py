@@ -103,8 +103,7 @@ class GPT(Base):
             if isinstance(layer, Dropout):
                 layer.disable()
             if isinstance(layer, GPTLayer):
-                layer.layer_norm1.disable()
-                layer.layer_norm2.disable()
+                layer.MultiHeadAttention.dropout.disable()
         
         
         for _ in range(seq_len):

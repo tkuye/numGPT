@@ -20,9 +20,11 @@ def main():
         optimizer = Adam(lr=config.get('learning_rate', 1e-5), 
                          beta1=optimizer_config.get('beta1', 0.9),
                             beta2=optimizer_config.get('beta2', 0.999),
-                            eps=optimizer_config.get('epsilon', 1e-4))
+                            eps=optimizer_config.get('epsilon', 1e-4), 
+                            clip_norm_range=optimizer_config.get('clip_norm_range', 2))
     elif optimizer_config.get('optimzer') == 'sgd':
-        optimizer = SGD(lr=config.get('learning_rate'))
+        optimizer = SGD(lr=config.get('learning_rate'), 
+        clip_norm_range=optimizer_config.get('clip_norm_range', 2))
     else:
         raise ValueError('Unknown optimizer')
     

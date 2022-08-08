@@ -13,6 +13,7 @@
   "num_layers": 6,
   "attention_heads": 6,
   "positional_learning": true,
+  "gradient_clip_range": 2,
 
   # Dropout
   "attention_dropout": 0.1,

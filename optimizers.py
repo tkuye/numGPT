@@ -7,11 +7,11 @@ class Optimizer:
     """
     Base class for all optimizers.
     """
-    def __init__(self, lr=0.01, clip_norm_val = 2):
+    def __init__(self, lr=0.01, clip_norm_range = 2):
         self.lr = lr
         self.pg:Dict[List] = {}
         self.num_params = 0
-        self.clip_norm_val = clip_norm_val
+        self.clip_norm_val = clip_norm_range
 
     def step(self):
         """
@@ -98,8 +98,8 @@ class Optimizer:
    
 
 class SGD(Optimizer):
-    def __init__(self, lr=0.01):
-        super(SGD, self).__init__(lr)
+    def __init__(self, lr=0.01 , clip_norm_range = 2):
+        super(SGD, self).__init__(lr, clip_norm_range)
         self.lr = lr
         
     def step(self):
@@ -115,8 +115,8 @@ class SGD(Optimizer):
         
     
 class Adam(Optimizer):
-    def __init__(self, lr=0.001, beta1=0.9, beta2=0.999, eps=1e-8):
-        super(Adam, self).__init__(lr)
+    def __init__(self, lr=0.001, beta1=0.9, beta2=0.999, eps=1e-8, clip_norm_range = 2):
+        super(Adam, self).__init__(lr, clip_norm_range)
         self.lr = lr
         self.beta1 = beta1
         self.beta2 = beta2
