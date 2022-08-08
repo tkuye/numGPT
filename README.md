@@ -1,5 +1,5 @@
 # numGPT
-Have you ever wanted to train a Transformer that's significantly slower and probably incorrect than the many existing library? Well then you've come to the right place. This entire architecture was written in purely numpy and no other dependency (except pyyaml) is required. 
+Have you ever wanted to train a Transformer that's significantly slower and probably incorrect than the many existing libraries? Well then you've come to the right place. This entire architecture was written in purely numpy and no other dependency (except pyyaml) is required. 
 
 ## Creating a virtual env
 Simply use `pipenv install` and `pipenv shell` to create the virtual environment. But like I said, since this only uses numpy, if you already have it installed you can go ahead and use it right away. 
