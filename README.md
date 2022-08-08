@@ -1,11 +1,11 @@
 # numGPT
-Have you ever wanted to train a Transformer that's significantly slower and probably incorrect than the many existing library? Well then you've come to the right place. This entire architecture was written in purely numpy and no other dependency (not including pyyaml) is required. 
+Have you ever wanted to train a Transformer that's significantly slower and probably incorrect than the many existing library? Well then you've come to the right place. This entire architecture was written in purely numpy and no other dependency (except pyyaml) is required. 
 
 ## Creating a virtual env
 Simply use `pipenv install` and `pipenv shell` to create the virtual environment. But like I said, since this only uses numpy, if you already have it installed you can go ahead and use it right away. 
 
 ## Notes
-This repository contains all the tools you need to construct a basic transformer using the existing layers provided. This is for LEARNING PURPOSES ONLY! Please do not try to actually build a new transformer with this code.
+This repository contains all the tools you need to construct a basic transformer using the existing layers provided. This is for LEARNING PURPOSES ONLY! Please do not try to build a production ready transformer with this code.
 
 ## Support 
 Please if you see any errors with my gradient calculations PLEASE MAKE A PULL REQUEST! I am so certain I made some mistakes in my calculations so I would love your help.
