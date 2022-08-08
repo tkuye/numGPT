@@ -77,7 +77,7 @@ class Trainer:
             path = os.path.join(self.save_path, f"{i}.pt")
             self.model.save_model(path)
             print("Saved model for epoch", i)
-            
+            return
 
         path = os.path.join(self.save_path, "model.pkl")
         self.model.save_model(path)
