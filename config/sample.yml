@@ -1,0 +1,33 @@
+{
+  # Tokenizer
+  "vocab_path": "./vocab/vocab.json",
+  "merges_path": "./vocab/merges.txt",
+
+  # Model related config
+  "model_save_path": "./checkpoint",
+  "max_seq_len": 32,
+  "batch_size": 32,
+  "num_iterations": 5000,
+  "learning_rate": 0.00001,
+  "embedding_dim": 192,
+  "num_layers": 6,
+  "attention_heads": 6,
+  "positional_learning": true,
+
+  # Dropout
+  "attention_dropout": 0.1,
+  "hidden_dropout": 0.1,
+
+  # Optimizer
+  "optimizer": {
+    "type": "adam",
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "epsilon": 0.000001
+  },
+
+  # Dataset
+  # Please use only one file here.
+  "dataset_path": "shakespeare.txt",
+
+}
